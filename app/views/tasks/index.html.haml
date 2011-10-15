@@ -1,0 +1,11 @@
+%table
+    %tr
+        %td= link_to 'New Task', new_task_path
+        %td
+    %tr
+        %td
+        %td
+
+- @tasks.each do |task|
+    %div.task{:id => task.id, :importance => task.importance, :urgency => task.urgency}
+        = task.name
