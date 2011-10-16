@@ -33,15 +33,20 @@ $(document).ready ->
             $.get(
                 "/tasks/list_ordered"
                 urgency: urgency
-                (r) -> $('.right_col').html r
+                (r) -> 
+                    $('.right_col').html r
+                    addCheckboxListeners()
             )
             
-    $('.right_col div.task input').each (id, elmnt) ->
-        $(elmnt).bind 'click', ->
-            if elmnt.checked
-                $(".left_col ##{elmnt.id}").hide()
-            else 
-                $(".left_col ##{elmnt.id}").show()
+    #add checkbox listerns
+    addCheckboxListeners = ->
+        $('.right_col div.task input').each (id, elmnt) ->
+            $(elmnt).bind 'click', ->
+                if elmnt.checked
+                    $(".left_col ##{elmnt.id}").hide()
+                else 
+                    $(".left_col ##{elmnt.id}").show()
+    addCheckboxListeners()  
                 
 #            $.ajax(
 #                "/tasks/#{ui.helper['0'].id}"
