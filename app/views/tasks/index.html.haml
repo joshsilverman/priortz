@@ -1,11 +1,14 @@
-%table
-    %tr
-        %td= link_to 'New Task', new_task_path
-        %td
-    %tr
-        %td
-        %td
+%div.left_col.col
+    %div.axis
+        - @tasks.each do |task|
+            %div.task{:id => task.id, :importance => task.importance, :urgency => task.urgency}
+                = task.name
+    %h1.yaxis Importance
+    %h1.xaxis Urgency
 
-- @tasks.each do |task|
-    %div.task{:id => task.id, :importance => task.importance, :urgency => task.urgency}
-        = task.name
+%div.right_col.col
+    - @tasks.each do |task|
+        %div.task{:id => task.id, :importance => task.importance, :urgency => task.urgency}
+            %input{:type => :checkbox, :id => task.id}
+            = task.name
+    

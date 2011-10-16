@@ -1,6 +1,8 @@
 Priortz::Application.routes.draw do
+  
+  match 'tasks/list_ordered'
   resources :tasks
-
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

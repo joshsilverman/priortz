@@ -2,12 +2,17 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = Task.all.sort_by { |t| 10000 - t.score }
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @tasks }
     end
+  end
+  
+  def list_ordered
+    @tasks = Task.all.sort_by { |t| 10000 - t.score }
+    render :layout => false
   end
 
   # GET /tasks/1
