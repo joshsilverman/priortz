@@ -42,3 +42,11 @@ $(document).ready ->
                 $(".left_col ##{elmnt.id}").hide()
             else 
                 $(".left_col ##{elmnt.id}").show()
+                
+#            $.ajax(
+#                "/tasks/#{ui.helper['0'].id}"
+#                data:
+#                    task:
+#                        complete:elmnt.checked
+#                type:'put'
+#            )
