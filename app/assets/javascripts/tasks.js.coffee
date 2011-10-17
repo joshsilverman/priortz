@@ -3,20 +3,27 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $(document).ready -> 
-    h = $('div.axis').height()
-    w = $('div.axis').width()
     
-    #position divs
+    #position divs (and adjust visibility)
     positionDivs = ->
+        h = $('div.axis').height()
+        w = $('div.axis').width()
         $ -> $('.left_col div.task').each ->
             offsetImportance = $(this).attr('importance')/100*(w-20)
             offsetUrgency = h - $(this).attr('urgency')/100*(h-12)
             $(this).css('left', offsetImportance)
             $(this).css('top', offsetUrgency)
-    positionDivs()
+            
+            #visibility
+            if $(this).attr('complete')
+                console.log "yo"
+                $(this).hide()
         
     #make draggable
     makeDraggable = ->
+        h = $('div.axis').height()
+        w = $('div.axis').width()
+        
         $(".left_col div.task").draggable
             containment: 'parent'
             stop: (e, ui) ->
@@ -39,7 +46,6 @@ $(document).ready ->
                         $('.right_col').html r
                         addListeners()
                 )
-    makeDraggable()
             
     #add checkbox listerns
     addListeners = ->
@@ -49,6 +55,15 @@ $(document).ready ->
                     $(".left_col ##{elmnt.id}").hide()
                 else 
                     $(".left_col ##{elmnt.id}").show()
+                    
+                #update complete state
+                $.ajax(
+                    "/tasks/#{elmnt.id}"
+                    data:
+                        task:
+                            complete: elmnt.checked
+                    type:'put'
+                )
                     
         #new task submit listener
         $('.right_col div.task input[type=text]').keypress (e, elmnt) ->
@@ -64,10 +79,18 @@ $(document).ready ->
                         positionDivs()
                         makeDraggable()
                         addListeners()
+                        $(this)[0].value = ''
                )
-               
-    addListeners()  
-                
+              
+    #load
+    load = ->
+        positionDivs()
+        addListeners()
+        makeDraggable()
+        $(window).resize ->
+            positionDivs()
+    load()
+              
 #            $.ajax(
 #                "/tasks/#{ui.helper['0'].id}"
 #                data:
