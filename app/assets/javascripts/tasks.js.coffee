@@ -47,7 +47,7 @@ $(document).ready ->
                         addListeners()
                 )
             
-    #add checkbox listerns
+    #add checkbox listeners
     addListeners = ->
         $('.right_col div.task input[type=checkbox]').each (id, elmnt) ->
             $(elmnt).bind 'click', ->

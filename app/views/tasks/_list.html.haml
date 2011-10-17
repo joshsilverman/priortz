@@ -1,3 +1,4 @@
 - @tasks.each do |task|
     %div.task{:id => task.id, :importance => task.importance, :urgency => task.urgency, :complete => "#{task.complete}"}
         = task.name
+        %div.remove
