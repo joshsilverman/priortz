@@ -32,7 +32,7 @@ class TasksController < ApplicationController
     @task = Task.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html #{ render :layout => false }
       format.json { render json: @task }
     end
   end
@@ -46,10 +46,11 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     @task = Task.new(params[:task])
-
+    @tasks = Task.all.sort_by { |t| 10000 - t.score }
+    
     respond_to do |format|
       if @task.save
-        format.html { redirect_to @task, notice: 'Task was successfully created.' }
+        format.html { render :new, :layout => false }
         format.json { render json: @task, status: :created, location: @task }
       else
         format.html { render action: "new" }

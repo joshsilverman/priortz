@@ -1,0 +1,6 @@
+%div.task
+    %input{:type => :text}
+- @tasks.each do |task|
+    %div.task{:id => task.id, :importance => task.importance, :urgency => task.urgency}
+        %input{:type => :checkbox, :id => task.id}
+        = task.name

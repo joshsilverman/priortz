@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20111015040200) do
     t.string   "name"
     t.integer  "urgency"
     t.integer  "importance"
+    t.boolean  "complete"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
