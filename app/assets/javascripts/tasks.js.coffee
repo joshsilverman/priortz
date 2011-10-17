@@ -47,8 +47,15 @@ $(document).ready ->
                         addListeners()
                 )
             
-    #add checkbox listeners
+    #add listeners
     addListeners = ->
+        $('.left_col div.remove').each (id, elmnt) ->
+            $(elmnt).bind 'click', ->
+                $.ajax(
+                    "/tasks/#{elmnt.id}"
+                    type:'delete'
+                )
+    
         $('.right_col div.task input[type=checkbox]').each (id, elmnt) ->
             $(elmnt).bind 'click', ->
                 if elmnt.checked
