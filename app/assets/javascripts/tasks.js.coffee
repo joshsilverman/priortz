@@ -15,7 +15,7 @@ $(document).ready ->
             $(this).css('top', offsetUrgency)
             
             #visibility
-            if $(this).attr('complete')
+            if $(this).attr('complete') == "true"
                 console.log "yo"
                 $(this).hide()
         
@@ -32,7 +32,7 @@ $(document).ready ->
 
                 #post new status
                 $.ajax(
-                    "/tasks/#{ui.helper['0'].id}"
+                    "/tasks/#{$(ui.helper['0']).attr('task_id')}"
                     data:
                         task:
                             importance: importance
@@ -49,23 +49,42 @@ $(document).ready ->
             
     #add listeners
     addListeners = ->
-        $('.left_col div.remove').each (id, elmnt) ->
+    
+        #remove
+        $('span.remove').each (id, elmnt) ->
+            $(elmnt).unbind 'click'
             $(elmnt).bind 'click', ->
+                elmnt = $(elmnt)
+                console.log $(elmnt).attr('task_id')
+                
+                console.log "a"
                 $.ajax(
-                    "/tasks/#{elmnt.id}"
+                    "/tasks/#{elmnt.attr('task_id')}"
                     type:'delete'
+                    complete: -> 
+                      $("div.task[task_id=#{elmnt.attr('task_id')}]").hide()
+                      console.log "b"
                 )
     
-        $('.right_col div.task input[type=checkbox]').each (id, elmnt) ->
+        #complete
+        $('div.task input[type=checkbox]').each (id, elmnt) ->
+        
             $(elmnt).bind 'click', ->
                 if elmnt.checked
-                    $(".left_col ##{elmnt.id}").hide()
-                else 
-                    $(".left_col ##{elmnt.id}").show()
+                    tasks = $(".task[task_id=#{$(elmnt).attr('task_id')}]")
+                    tasks.attr('complete', 'true')
+                else
+                    tasks = $(".task[task_id=#{$(elmnt).attr('task_id')}]")
+                    tasks.attr('complete', 'false')
+                    
+                #update both checkboxes
+                checkboxes = $(".task[task_id=#{$(elmnt).attr('task_id')}] input[type=checkbox]")
+                console.log checkboxes
+                checkboxes.attr('checked', elmnt.checked)
                     
                 #update complete state
                 $.ajax(
-                    "/tasks/#{elmnt.id}"
+                    "/tasks/#{$(elmnt).attr('task_id')}"
                     data:
                         task:
                             complete: elmnt.checked
@@ -81,12 +100,12 @@ $(document).ready ->
                         'name':$(this)[0].value
                         importance:50
                         urgency:50
-                    (r) -> 
-                        $('.axis').html r
-                        positionDivs()
-                        makeDraggable()
-                        addListeners()
-                        $(this)[0].value = ''
+                    (r) -> window.location = "/tasks"
+#                        $(document).html r
+#                        positionDivs()
+#                        makeDraggable()
+#                        addListeners()
+#                        $(this)[0].value = ''
                )
               
     #load

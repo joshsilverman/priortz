@@ -1,4 +1,5 @@
 - @tasks.each do |task|
-    %div.task{:id => task.id, :importance => task.importance, :urgency => task.urgency, :complete => "#{task.complete}"}
+    %div.task{:task_id => task.id, :importance => task.importance, :urgency => task.urgency, :complete => "#{task.complete}"}
+        %input{:type => :checkbox, :task_id => task.id, :checked => task.complete}
         = task.name
-        %div.remove
+        %span.remove{:task_id => task.id} x

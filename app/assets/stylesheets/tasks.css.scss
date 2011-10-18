@@ -18,12 +18,12 @@
         
         div.task {
             position:absolute;
-            font-weight:bold;
-            padding:10px;
-            border-radius:5px;
             background-color:#fff;
-            cursor:move;
-            opacity:.9;
+            cursor:move;            
+        }
+        
+        div.task[complete=true] {
+            display:none
         }
     }
     
@@ -53,16 +53,38 @@
     overflow-y:scroll;
     
     div.task {
-        padding:5px;
-        margin:5px;
-        border-radius:5px;
         background-color:#818181;
         color:#fff;
-        font-weight:bold;
-        opacity:.9;
+    }
+    
+    div.task[complete=true] {
+        background-color:#bcbcbc;
+    }
+}
+
+div.task {
+    padding:1px;
+    margin:5px;
+    border-radius:5px;
+    font-weight:bold;
+    opacity:.9;
+    border:1px solid lightgrey;
+
+    input[type=text] {
+        width:98%;
+    }
+    
+    span.remove {
+        padding:2px 5px;
+        font-size:.8em;
         
-        input[type=text] {
-            width:98%;
-        }
+        border-radius:4px;
+        border:1px solid grey;
+        cursor:pointer;
+        background-color:#aaa;
+    }
+
+    span.remove:hover {
+        background-color:lightgrey;
     }
 }
