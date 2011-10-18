@@ -16,7 +16,6 @@ $(document).ready ->
             
             #visibility
             if $(this).attr('complete') == "true"
-                console.log "yo"
                 $(this).hide()
         
     #make draggable
@@ -55,15 +54,12 @@ $(document).ready ->
             $(elmnt).unbind 'click'
             $(elmnt).bind 'click', ->
                 elmnt = $(elmnt)
-                console.log $(elmnt).attr('task_id')
                 
-                console.log "a"
                 $.ajax(
                     "/tasks/#{elmnt.attr('task_id')}"
                     type:'delete'
                     complete: -> 
                       $("div.task[task_id=#{elmnt.attr('task_id')}]").hide()
-                      console.log "b"
                 )
     
         #complete
@@ -79,7 +75,6 @@ $(document).ready ->
                     
                 #update both checkboxes
                 checkboxes = $(".task[task_id=#{$(elmnt).attr('task_id')}] input[type=checkbox]")
-                console.log checkboxes
                 checkboxes.attr('checked', elmnt.checked)
                     
                 #update complete state
@@ -116,11 +111,3 @@ $(document).ready ->
         $(window).resize ->
             positionDivs()
     load()
-              
-#            $.ajax(
-#                "/tasks/#{ui.helper['0'].id}"
-#                data:
-#                    task:
-#                        complete:elmnt.checked
-#                type:'put'
-#            )
