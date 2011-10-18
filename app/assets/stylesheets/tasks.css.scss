@@ -71,11 +71,11 @@ div.task {
     border:1px solid lightgrey;
 
     input[type=text] {
-        width:95%;
-        border: 0px solid grey;
-        border-radius: 2px;
+        width:96%;
+/*        border: 1px solid grey;*/
+        border-radius: 4px;
         margin:2%;
-        padding:1%;
+        padding:4px;
     }
     
     span.remove {

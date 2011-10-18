@@ -21,6 +21,7 @@ gem 'haml'
 
 group :production do
   gem 'pg'
+  gem 'therubyracer-heroku', '0.8.1.pre3'
 end
 
 group :development, :test do
