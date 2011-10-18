@@ -1,8 +1,9 @@
 class TasksController < ApplicationController
-  # GET /tasks
-  # GET /tasks.json
+  
+  before_filter :authenticate
+
   def index
-    @tasks = Task.all.sort_by { |t| 10000 - t.score }
+    @tasks = current_user.tasks.all.sort_by { |t| 10000 - t.score }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -11,14 +12,12 @@ class TasksController < ApplicationController
   end
   
   def list_ordered
-    @tasks = Task.all.sort_by { |t| 10000 - t.score }
+    @tasks = current_user.tasks.all.sort_by { |t| 10000 - t.score }
     render :layout => false
   end
 
-  # GET /tasks/1
-  # GET /tasks/1.json
   def show
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,10 +25,8 @@ class TasksController < ApplicationController
     end
   end
 
-  # GET /tasks/new
-  # GET /tasks/new.json
   def new
-    @task = Task.new
+    @task = current_user.tasks.new
 
     respond_to do |format|
       format.html #{ render :layout => false }
@@ -37,16 +34,13 @@ class TasksController < ApplicationController
     end
   end
 
-  # GET /tasks/1/edit
   def edit
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
   end
 
-  # POST /tasks
-  # POST /tasks.json
   def create
-    @task = Task.new(params[:task])
-    @tasks = Task.all.sort_by { |t| 10000 - t.score }
+    @task = current_user.tasks.new(params[:task])
+    @tasks = current_user.tasks.all.sort_by { |t| 10000 - t.score }
     
     respond_to do |format|
       if @task.save
@@ -59,10 +53,8 @@ class TasksController < ApplicationController
     end
   end
 
-  # PUT /tasks/1
-  # PUT /tasks/1.json
   def update
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
 
     respond_to do |format|
       if @task.update_attributes(params[:task])
@@ -75,10 +67,8 @@ class TasksController < ApplicationController
     end
   end
 
-  # DELETE /tasks/1
-  # DELETE /tasks/1.json
   def destroy
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
     @task.destroy
 
     respond_to do |format|
