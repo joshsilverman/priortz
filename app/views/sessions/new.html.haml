@@ -6,10 +6,10 @@
 - else
   %div.splash
     %h1 
-      - slogans = ['Deciding to do one thing is <br/>deciding <span>not</span> to do another', 'Life is a box of tradeoffs...']
+      - slogans = ['Deciding to do one thing is <br/>deciding <span>not</span> to do another', 'To-do lists only get <span>longer</span>']
       = slogans[rand(slogans.length)].html_safe
     %div.sign_in
       %h2 Priortz
       = link_to "Sign in with Twitter", "/auth/twitter"
-    %h1 Choose Wisely.
+    / %h1 Prioritize
 
