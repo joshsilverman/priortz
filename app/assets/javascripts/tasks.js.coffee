@@ -3,11 +3,19 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 $(document).ready -> 
+   
+    #props
+    nextHighestZ = 1
+   
+    #calibrate graph dimensions
+    h = w = 0
+    calibrateGraph = ->
+        h = $('div.axis').height()
+        w = $('div.axis').width()
     
     #position divs (and adjust visibility)
     positionDivs = ->
-        h = $('div.axis').height()
-        w = $('div.axis').width()
+        calibrateGraph()
         $ -> $('.left_col div.task').each ->
             offsetImportance = $(this).attr('importance')/100*(w-20)
             offsetUrgency = h - $(this).attr('urgency')/100*(h-12)
@@ -20,16 +28,15 @@ $(document).ready ->
         
     #make draggable
     makeDraggable = ->
-        h = $('div.axis').height()
-        w = $('div.axis').width()
-        
         $(".left_col div.task").draggable
             containment: 'parent'
             stop: (e, ui) ->
+                calibrateGraph()
                 importance = Math.round ui.offset.left/(w-20)*100
                 urgency = Math.round (h - ui.offset.top)/(h-20)*100
 
                 #post new status
+                id = $(ui.helper['0']).attr('task_id')
                 $.ajax(
                     "/tasks/#{$(ui.helper['0']).attr('task_id')}"
                     data:
@@ -37,13 +44,17 @@ $(document).ready ->
                             importance: importance
                             urgency: urgency
                     type:'put'
-                )
 
-                $.get(
-                    "/tasks/list_ordered"
-                    (r) -> 
-                        $('.right_col').html r
-                        addListeners()
+                    complete: (r) -> 
+                        $.get(
+                            "/tasks/list_ordered"
+                            (r) -> 
+                                $('.right_col').html r
+                                addListeners()
+                        )
+                        
+                        tasks = $(".task[task_id=#{id}]")
+                        tasks.attr({importance:importance, urgency:urgency})
                 )
             
     #add listeners
@@ -86,7 +97,7 @@ $(document).ready ->
                     type:'put'
                 )
                     
-        #new task submit listener
+        #new task submit
         $('.right_col div.task input[type=text]').keypress (e, elmnt) ->
             if (e.which == 13)
                $.post(
@@ -95,14 +106,20 @@ $(document).ready ->
                         'name':$(this)[0].value
                         importance:50
                         urgency:50
-                    (r) -> window.location = "/tasks"
-#                        $(document).html r
-#                        positionDivs()
-#                        makeDraggable()
-#                        addListeners()
-#                        $(this)[0].value = ''
+                    (r) ->
+                        $('body').html r
+                        load()
                )
-              
+               
+        #highlight task
+        $('div.task').each (id, elmnt) ->
+            $(elmnt).bind 'mousedown', (e) ->
+                id = $(elmnt).attr('task_id')
+                $(".task").attr('active', false)
+                $(".task[task_id=#{id}]").attr('active', 'true')
+                plotted_task = $(".left_col div.task[task_id=#{id}]")
+                plotted_task.css('z-index', nextHighestZ++)
+                
     #load
     load = ->
         positionDivs()

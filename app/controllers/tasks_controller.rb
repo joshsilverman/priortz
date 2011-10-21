@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_filter :authenticate
 
   def index
-    @tasks = current_user.tasks.all.sort_by { |t| 10000 - t.score }
+    @tasks = current_user.tasks.recent
 
     respond_to do |format|
       format.html # index.html.erb
@@ -12,7 +12,7 @@ class TasksController < ApplicationController
   end
   
   def list_ordered
-    @tasks = current_user.tasks.all.sort_by { |t| 10000 - t.score }
+    @tasks = current_user.tasks.recent
     render :layout => false
   end
 
@@ -40,11 +40,11 @@ class TasksController < ApplicationController
 
   def create
     @task = current_user.tasks.new(params[:task])
-    @tasks = current_user.tasks.all.sort_by { |t| 10000 - t.score }
     
     respond_to do |format|
       if @task.save
-        format.html { render :new, :layout => false }
+        @tasks = current_user.tasks.recent
+        format.html { render :index, :layout => false }
         format.json { render json: @task, status: :created, location: @task }
       else
         format.html { render action: "new" }

@@ -101,9 +101,14 @@ div.task {
         border-bottom:none;
         cursor:pointer;
         background-color:#aaa;
+        
+        &:hover {
+            background-color:lightgrey;
+        }
     }
 
-    span.remove:hover {
-        background-color:lightgrey;
+    &[active=true] {
+        background-color:orange !important;
+        color:white !important;
     }
 }
