@@ -1,0 +1,5 @@
+%ul.lists
+    .title My Priortz Lists
+    %li.list= link_to 'New list', new_list_path
+    -@lists.each do |list|
+        %li.list= link_to list.name, list_path(list)

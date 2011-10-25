@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   has_many :tasks
+  has_many :lists
   
   def self.create_with_omniauth(auth)
     create! do |user|

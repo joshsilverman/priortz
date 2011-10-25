@@ -1,15 +1,6 @@
 class TasksController < ApplicationController
   
   before_filter :authenticate
-
-  def index
-    @tasks = current_user.tasks.recent
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @tasks }
-    end
-  end
   
   def list_ordered
     @tasks = current_user.tasks.recent
@@ -41,16 +32,13 @@ class TasksController < ApplicationController
   def create
     @task = current_user.tasks.new(params[:task])
     
-    respond_to do |format|
       if @task.save
-        @tasks = current_user.tasks.recent
-        format.html { render :index, :layout => false }
-        format.json { render json: @task, status: :created, location: @task }
+        @list = @tasks = @task.list
+        @tasks = @list.recent_tasks
+        render 'lists/show', :layout => false 
       else
-        format.html { render action: "new" }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
+        render :status => 400
       end
-    end
   end
 
   def update

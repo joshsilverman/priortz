@@ -1,5 +1,7 @@
 Priortz::Application.routes.draw do
   
+  resources :lists
+
   match 'tasks/list_ordered'
   resources :tasks
 

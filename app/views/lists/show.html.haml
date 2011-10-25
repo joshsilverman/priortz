@@ -1,0 +1,16 @@
+%div.left_col.col
+
+    .nav
+        %span= "#{@list.name} list"
+        |
+        = link_to "My priortz lists", "/lists"
+        |
+        = link_to "Sign out", "/signout"
+
+    %div.axis
+        =render 'tasks/list'
+    %h1.yaxis Importance
+    %h1.xaxis Urgency
+
+%div.right_col.col{:list_id => @list.id}
+    = render 'tasks/input_and_list'
